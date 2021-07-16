@@ -27,6 +27,7 @@ namespace PULI.Views
         StackLayout total_stack_qborder04 = new StackLayout();
         StackLayout total_stack_qborder04_final = new StackLayout();
         StackLayout final_stack_qborder04 = new StackLayout();
+        StackLayout test_stack = new StackLayout();
         Label label_check = new Label();
         Label label_check_reset = new Label();
 
@@ -48,6 +49,7 @@ namespace PULI.Views
         public static Dictionary<string, string> IsGreenOrRed = new Dictionary<string, string>(); // 點選checkbox後判斷label顏色
         public Dictionary<string, string> EntrytxtList = new Dictionary<string, string>(); // for存SQLite裡面抓出來的entry text
         public static Dictionary<string, string> YesOrNoAlreadyChoose = new Dictionary<string, string>();
+        public static Dictionary<string, int> Stack_Number = new Dictionary<string, int>();
         //public Dictionary<string, bool> IsResetList = new Dictionary<string, bool>();
         public static int[] ansList;
         //public static TempDatabase AccDatabase;
@@ -56,9 +58,11 @@ namespace PULI.Views
         public static string ANS2;
         public static string ANS3;
         public static string Qtype;
+        public static int ques_stack_count = 0;
         private static int same_ans_coount = 0; // 看同上的那筆問卷題目有幾筆
         private static int same_ans_copy = 0; // 看他抓了幾筆同上的資料(用來判斷同上那邊的答案全部抓完之後再reset
         private static string stack_name;
+        private static string stack_name_2;
         //public static string anslist;
         //public static string p;
         public static TempDatabase AccDatabase; // 存問卷答案的SQLite
@@ -160,6 +164,7 @@ namespace PULI.Views
                             TmpAnsList_same_wqh[a.ClientName + i.qb_order] = "";
                             CheckboxList[a.ClientName] = false;
                             YesOrNoAlreadyChoose[a.wqh_s_num + i.qb_order] = "";
+                            Stack_Number[a.ClientName + a.wqh_s_num + i.qb_order] = 0;
                         }
                     }
 
@@ -372,7 +377,7 @@ namespace PULI.Views
                             //Console.WriteLine("qb03~~ " + value.qbs[0].qb03);
                             //Console.WriteLine("valuename~~ " + value.ClientName);
                             questionView(value);
-
+                            
 
 
 
@@ -598,6 +603,7 @@ namespace PULI.Views
             
             foreach (var i in questionList.qbs) // 看問題有幾個就跑幾次
             {
+                
                 //////Console.WriteLine("qqq~~ " + i.qb03[0]);
                 //////Console.WriteLine("qb03~~~" + i.qb03.Count());
                 //Console.WriteLine("qborderIN~~~ " + i.qb_order);
@@ -791,6 +797,8 @@ namespace PULI.Views
                                 }
                                 check_box.CheckedChanged += async (s, e) =>
                                 {
+                                    stack_name = questionList.wqh_s_num + i.qb_order;
+                                    stack_name_2 = questionList.ClientName + questionList.wqh_s_num + i.qb_order;
                                     //////Console.WriteLine("checkboxin2~~~");
                                     if (e.Value) // 如果選是，要跳出entry所以需要reset
                                     {
@@ -1936,12 +1944,22 @@ namespace PULI.Views
                                                                     Padding = new Thickness(10, 5, 10, 5),
                                                                     Margin = new Thickness(5, 0, 5, 0),
                                                                     BackgroundColor = Color.FromHex("eddcd2"),
-
+                                                                   
                                                                     CornerRadius = 10,
                                                                     HasShadow = false,
                                                                     Content = mix_stack_qborder04
                                                                 };
-                                                                quesStack.Children.Add(frame_qborder04);
+                                                                if(test_stack.Children.Where(x => x.ClassId == stack_name_2) != null)
+                                                                {
+                                                                    Console.WriteLine("stack_name_2~~~ " + stack_name_2);
+                                                                    Console.WriteLine("name~~ " + questionList.ClientName);
+                                                                    Console.WriteLine("wqh~~ " + questionList.wqh_s_num);
+                                                                    Console.WriteLine("ans~~ " + Stack_Number[questionList.ClientName + questionList.wqh_s_num + i.qb_order]);
+                                                                    int stack_num = Stack_Number[questionList.ClientName + questionList.wqh_s_num + i.qb_order];
+                                                                    //test_stack.Children.Insert(3,frame_qborder04);
+                                                                    test_stack.Children.Add(frame_qborder04);
+                                                                }
+                                                                //quesStack.Children.Add(frame_qborder04);
                                                             }
                                                         }
                                                         
@@ -2316,8 +2334,8 @@ namespace PULI.Views
                                             }
                                         }
 
-                                        Console.WriteLine("AAAA_j~~ " + j);
-                                        Console.WriteLine("YYYYYY_jj~~ " + temp_j);
+                                        //Console.WriteLine("AAAA_j~~ " + j);
+                                        //Console.WriteLine("YYYYYY_jj~~ " + temp_j);
                                         bool ischeck = (temp_j == j) ? true : false; // 再把剛剛的答案抓回來判斷(如果是就把他勾起來)
                                                                                      //bool isMoreCheckbox = (temp_j == "未發") ? true : false; // 如果答案是 未發 -> 第四題顯示
                                         
@@ -2352,6 +2370,8 @@ namespace PULI.Views
                                         }
                                         check_box.CheckedChanged += async (s, e) =>
                                         {
+                                            stack_name = questionList.wqh_s_num + i.qb_order;
+                                            stack_name_2 = questionList.ClientName + questionList.wqh_s_num + i.qb_order;
                                             //////Console.WriteLine("checkboxin3~~~");
                                             if (e.Value) // 如果選是，要跳出entry所以需要reset
                                             {
@@ -2984,8 +3004,9 @@ namespace PULI.Views
                                         {
                                             //Console.WriteLine("true~~~" + questionList.wqh_s_num + i.qb_order + j);
                                             stack_name = questionList.wqh_s_num + i.qb_order;
+                                            stack_name_2 = questionList.ClientName + questionList.wqh_s_num + i.qb_order;
                                             // 先判斷有沒有已經選的選項，如果有也要把它刪掉換成原本的沒選過跟黑色字
-                                            
+
                                             if (e.Value) // 如果選是，要跳出entry所以需要reset
                                             {
                                                 //Console.WriteLine("checkbox~~~IN~~~");
@@ -3635,6 +3656,8 @@ namespace PULI.Views
                                         }
                                         check_box.CheckedChanged += async (s, e) =>
                                         {
+                                            stack_name = questionList.wqh_s_num + i.qb_order;
+                                            stack_name_2 = questionList.ClientName + questionList.wqh_s_num + i.qb_order;
                                             //////Console.WriteLine("checkboxin3~~~");
                                             if (e.Value) // 如果選是，要跳出entry所以需要reset
                                             {
@@ -4135,14 +4158,20 @@ namespace PULI.Views
                             Padding = new Thickness(10, 5, 10, 5),
                            Margin= new Thickness(5, 0, 5, 0),
                             BackgroundColor = Color.FromHex("eddcd2"),
-
+                            ClassId = questionList.ClientName + questionList.wqh_s_num + i.qb_order,
                             CornerRadius = 10,
                             HasShadow = false,
                             Content = final_stack
                         };
-                       
 
-                        quesStack.Children.Add(frame);
+                        test_stack = new StackLayout
+                        {
+                            Orientation = StackOrientation.Vertical
+                        };
+                        test_stack.Children.Add(frame);
+                        ques_stack_count++;
+                        Stack_Number[questionList.ClientName + questionList.wqh_s_num + i.qb_order] = ques_stack_count;
+                        quesStack.Children.Add(test_stack);
 
                     }
                     
@@ -4537,13 +4566,22 @@ namespace PULI.Views
                                 Padding = new Thickness(10, 5, 10, 5),
                                 Margin = new Thickness(5, 0, 5, 0),
                                 BackgroundColor = Color.FromHex("eddcd2"),
+                                ClassId = questionList.ClientName + questionList.wqh_s_num + i.qb_order,
                                 CornerRadius = 10,
                                 HasShadow = false,
                                 Content = final_stack
                             };
-                            quesStack.Children.Add(frame);
 
+                            test_stack = new StackLayout
+                            {
+                                Orientation = StackOrientation.Vertical
+                            };
+                            test_stack.Children.Add(frame);
+                            ques_stack_count++;
+                            Stack_Number[questionList.ClientName + questionList.wqh_s_num + i.qb_order] = ques_stack_count;
+                            quesStack.Children.Add(frame);
                            
+
                         }
 
                     }
