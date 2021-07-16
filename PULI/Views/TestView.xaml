@@ -4,7 +4,7 @@
              x:Class="PULI.Views.TestView">
     <StackLayout>
         <ScrollView>
-            <StackLayout x:Name="quesStack" Orientation="Vertical">
+            <StackLayout x:Name="quesStack" Orientation="Vertical" ClassId="">
 
 
             </StackLayout>

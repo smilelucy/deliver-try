@@ -48,7 +48,7 @@ namespace PULI.Views
         public async void setView() // 總表
         {
             Console.WriteLine("SETVIEW");
-            Console.WriteLine("timeactivity~~~ " + MainPage._time);
+            //Console.WriteLine("timeactivity~~~ " + MainPage._time);
             if (MainPage._time == "早上")
             {
                 totalList = await web.Get_Daily_Shipment(MainPage.token);
@@ -69,7 +69,7 @@ namespace PULI.Views
                     //listview.ItemTemplate = new DataTemplate(typeof(ShipCell)); // 把模式設為ActivityCell
                     //listview.SelectedItem = null; // 
                     //listview.ItemsSource = totalList.daily_shipments; // ItemTemplate的資料來源
-                    Console.WriteLine("count~~ " + totalList.daily_shipments.Count());
+                   // Console.WriteLine("count~~ " + totalList.daily_shipments.Count());
                     for (int i = 0; i < totalList.daily_shipments.Count; i++)
                     {
 
@@ -92,10 +92,10 @@ namespace PULI.Views
                             ct_mp04_list.Add("未送");
                         }
                     }
-                    Console.WriteLine("restore~~~ " + restoreList.restore);
+                    //Console.WriteLine("restore~~~ " + restoreList.restore);
                    // Console.WriteLine("restore0~~~ " + restoreList.restore[0]);
-                    Console.WriteLine("total~~~ " + totalList.daily_shipments.Count());
-                    Console.WriteLine("ct_name~~ " + ct_name_list[0]);
+                    //Console.WriteLine("total~~~ " + totalList.daily_shipments.Count());
+                    //Console.WriteLine("ct_name~~ " + ct_name_list[0]);
                     //for(int j = 0; j < stopList.stop.Count(); j++)
                     //{
                     //    stop_list.Add(stopList.stop);
@@ -369,7 +369,7 @@ namespace PULI.Views
                         }, j, i+1) ;
                         
                         j = j + 1;
-                        Console.WriteLine("ADD~~Q1");
+                        //Console.WriteLine("ADD~~Q1");
                             grid.Children.Add(new Label
                             {
                                 Text = ct_name_list[i],
@@ -383,7 +383,7 @@ namespace PULI.Views
                                 Margin = new Thickness(2, 2, 0, 2)
                             }, j, i+1);
                         j = j + 1;
-                        Console.WriteLine("ADD~~Q2");
+                        //Console.WriteLine("ADD~~Q2");
                         grid.Children.Add(new Label
                         {
                             Text = dys02_list[i],
@@ -425,7 +425,7 @@ namespace PULI.Views
                         j = j + 1;
                         if(ct_mp06_list[i] == "Y")
                         {
-                            Console.WriteLine("dys061~~ " + ct_mp06_list[i]);
+                            //Console.WriteLine("dys061~~ " + ct_mp06_list[i]);
                             grid.Children.Add(new Label
                             {
                                 Text = dys05_type_list[i],
@@ -441,7 +441,7 @@ namespace PULI.Views
                         }
                         else
                         {
-                            Console.WriteLine("dys062~~ " + ct_mp06_list[i]);
+                            //Console.WriteLine("dys062~~ " + ct_mp06_list[i]);
                             grid.Children.Add(new Label
                             {
                                 Text = dys05_type_list[i],
@@ -458,7 +458,7 @@ namespace PULI.Views
                         j = j + 1;
                         if(ct_mp04_list[i] == "已送")
                         {
-                            Console.WriteLine("ct01~~~ " + ct_mp04_list[i]);
+                            //Console.WriteLine("ct01~~~ " + ct_mp04_list[i]);
                             grid.Children.Add(new Label
                             {
                                 Text = ct_mp04_list[i],
@@ -474,7 +474,7 @@ namespace PULI.Views
                         }
                         else
                         {
-                            Console.WriteLine("ct02~~~ " + ct_mp04_list[i]);
+                           // Console.WriteLine("ct02~~~ " + ct_mp04_list[i]);
                             grid.Children.Add(new Label
                             {
                                 Text = ct_mp04_list[i],
